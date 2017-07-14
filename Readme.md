@@ -1,4 +1,4 @@
-# <img src="Logo/Logo.png">
+# <img src="Design/Logo/Logo.png">
 <p align="center"><i>Exploration, Research, Discovery</i> - a <a href="http://www.nexusmods.com/skyrim/mods/64798">Campfire</a>-based mod for Skyrim</p>
 
 ### Main Ideas

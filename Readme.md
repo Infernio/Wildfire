@@ -15,22 +15,22 @@
      - Unlocked by: Finding your first Relic
      - Improved by: Finding and researching more Relics
      - Perks: Unlocks studying and finding other types of Relics and improves the benefits they give you when researched
- - **TBD**
-     - Unlocked by: Researching your first *TBD*-specific Relic
-     - Improved by: Researching more *TBD*-specific Relics
+ - **Arcana**
+     - Unlocked by: Researching your first Arcana-specific Relic
+     - Improved by: Researching more Arcana-specific Relics
      - Perks: Improvements to magical abilities, new spells and powers
  - **Reflexes**
      - Unlocked by: Researching your first Reflexes-specific Relic
      - Improved by: Researching more Reflexes-specific Relics
      - Perks: Bonuses to thievery, sneaking and dodging
- - **TBD**
-     - Unlocked by: Researching your first *TBD*-specific Relic
-     - Improved by: Researching more *TBD*-specific Relics
+ - **Strength**
+     - Unlocked by: Researching your first Strength-specific Relic
+     - Improved by: Researching more Strength-specific Relics
      - Perks: Bonuses to combat, health and resistances
  - **Exploration**
      - Unlocked by: Finding a significant landmark (i.e. Blackreach, Throat of the World)
      - Improved by: Discovering new places
-     - Perks: Provides general navigation and exploration buffs when travelling to many different areas of the map
+     - Perks: Provides general navigation and exploration buffs when traveling to many different areas of the map
  - **More to come...**
 
 ### License

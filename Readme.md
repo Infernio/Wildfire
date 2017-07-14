@@ -7,7 +7,7 @@
  - Which ones you find depends on your skills (e.g. mages will get more magic-related ones)
  - Research (at a camp) needed to unlock these secrets
  - As you level your skills (perk trees) up, you'll gain access to more abilities, more relics, etc.
- - Different relic sizes: minor (leveled loot), normal (hybrid), ancient (hand-placed, title is WIP)
+ - Different relic sizes: minor (leveled loot), normal and ancient (hand-placed)
 
 ### Perk Trees
  - Every perk tree is hidden and has to be unlocked first

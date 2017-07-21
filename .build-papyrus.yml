@@ -5,3 +5,4 @@ imports:
     - D:\Users\Infernio\Desktop\Programming\Wildfire\scripts\source
     - D:\Steam\steamapps\common\Skyrim\Data\Scripts\Source
     - D:\Steam\steamapps\common\Skyrim\Data\Scripts
+optimize: true

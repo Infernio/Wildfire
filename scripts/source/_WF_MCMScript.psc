@@ -22,7 +22,7 @@ EndEvent
 
 Event OnPageReset(string a_page)
     If(a_page == "")
-        LoadCustomContent("interface/wildfire/logo.dds", 258, 95)
+        LoadCustomContent("../interface/wildfire/logo.dds", 0, 95)
         Return
     Else
         UnloadCustomContent()

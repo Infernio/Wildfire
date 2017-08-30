@@ -137,7 +137,6 @@ Function ProcessRelic(int itemCount)
 {Handles relics being added to the player's inventory.
 Arguments:
  - itemCount: The number of relics that have been added to the player's inventory.}
-    ; TODO Remember which relics the player has already picked up, so that they can't just drop them again for free XP
     If(archaeologyUnlocked.GetValue() == 0)
         ; we discovered archaeology
         If(CampUtil.RegisterPerkTree(archaeologyNodeController, "Wildfire.esp"))
@@ -148,10 +147,6 @@ Arguments:
             ; something went very wrong
             Debug.MessageBox("Failed to register a perk tree. You may have too many Campfire perk tree mods installed.")
         EndIf
-
-    ; if there are still perks to unlock, increase the archaeology progress
-    Else
-        AdvanceArchaeology(itemCount)
     EndIf
 EndFunction
 
@@ -209,35 +204,35 @@ Arguments:
 EndFunction
 
 Function AdvanceArchaeology(int amount)
-{Advanced archaeology and grants perks if applicable.
+{Advances archaeology and grants perks if applicable.
 Arguments:
 - amount: The amount of points to advance archaeology by.}
     AdvanceSkill(amount, archaeologyPerksTotal.GetValue() as int, 5, 10, archaeologyRelicsFound, archaeologyRelicsRequired, archaeologyCampfireProgress, archaeologyPerksAvailable, archaeologyPerksEarned, archaeologySkillAdvancedMsg, archaeologyPerkEarnedMsg)
 EndFunction
 
 Function AdvanceArcana(int amount)
-{Advanced arcana and grants perks if applicable.
+{Advances arcana and grants perks if applicable.
 Arguments:
 - amount: The amount of points to advance arcana by.}
     AdvanceSkill(amount, arcanaPerksTotal.GetValue() as int, 5, 10, arcanaResearchPoints, arcanaResearchPointsRequired, arcanaCampfireProgress, arcanaPerksAvailable, arcanaPerksEarned, arcanaSkillAdvancedMsg, arcanaPerkEarnedMsg)
 EndFunction
 
 Function AdvanceReflexes(int amount)
-{Advanced reflexes and grants perks if applicable.
+{Advances reflexes and grants perks if applicable.
 Arguments:
 - amount: The amount of points to advance reflexes by.}
     AdvanceSkill(amount, reflexesPerksTotal.GetValue() as int, 5, 10, reflexesResearchPoints, reflexesResearchPointsRequired, reflexesCampfireProgress, reflexesPerksAvailable, reflexesPerksEarned, reflexesSkillAdvancedMsg, reflexesPerkEarnedMsg)
 EndFunction
 
 Function AdvanceStrength(int amount)
-{Advanced strength and grants perks if applicable.
+{Advances strength and grants perks if applicable.
 Arguments:
 - amount: The amount of points to advance strength by.}
     AdvanceSkill(amount, strengthPerksTotal.GetValue() as int, 5, 10, strengthResearchPoints, strengthResearchPointsRequired, strengthCampfireProgress, strengthPerksAvailable, strengthPerksEarned, strengthSkillAdvancedMsg, strengthPerkEarnedMsg)
 EndFunction
 
 Function AdvanceSkill(int amount, int numPerks, int linearScale, int constantScale, GlobalVariable progressVar, GlobalVariable requiredProgressVar, GlobalVariable campfireProgressVar, GlobalVariable availablePerksVar, GlobalVariable earnedPerksVar, Message skillAdvancedMsg, Message perkEarnedMsg)
-{Advanced the specified skill by the specified amount of points. Returns true if a 'skill advanced' message should be shown.
+{Advances the specified skill by the specified amount of points. Returns true if a 'skill advanced' message should be shown.
 Arguments:
  - amount:               The amount the skill should be increased by.
  - numPerks:             The total number of perks in this tree.

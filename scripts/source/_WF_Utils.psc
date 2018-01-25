@@ -1,20 +1,6 @@
 ScriptName _WF_Utils Hidden
 {Utility functions used in many Wildfire scripts.}
 
-Function IncrementGlobalVariable(GlobalVariable var) Global
-    {Increments the specified global variable.
-    Arguments:
-     - var: The global variable in question.}
-    var.SetValue(var.GetValue() + 1)
-EndFunction
-
-Function DecrementGlobalVariable(GlobalVariable var) Global
-    {Decrements the specified global variable.
-    Arguments:
-     - var: The global variable in question.}
-    var.SetValue(var.GetValue() - 1)
-EndFunction
-
 float Function GetTotalMagicSkills(Actor player) Global
     {Returns the total number of skill points the player has in all magic skills.
     The magic skills are: Alteration, Conjuration, Destruction, Illusion, Restoration.

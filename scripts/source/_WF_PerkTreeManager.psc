@@ -4,31 +4,31 @@ ScriptName _WF_PerkTreeManager Extends ReferenceAlias
 import _WF_Utils
 
 ; GENERAL
-Message             Property messageFailedRegistration Auto
+Message             Property MessageFailedRegistration Auto
 {The message shown to the player when the perk tree registration fails.}
 
 ; PERK TREES
-Message[]           Property treeUnlockedMessages Auto
+Message[]           Property TreeUnlockedMessages Auto
 {The messages that will be shown to the player when they unlock the tree with the corresponding ID.}
-Message[]           Property skillAdvancedMessages Auto
+Message[]           Property SkillAdvancedMessages Auto
 {The messages that will be shown to the player when they advance the tree with the corresponding ID.}
-Message[]           Property perkEarnedMessages Auto
+Message[]           Property PerkEarnedMessages Auto
 {The messages that will be shown to the player when they earn a perk for the tree with the corresponding ID.}
-Activator[]         Property nodeControllers Auto
+Activator[]         Property NodeControllers Auto
 {The node controllers for the corresponding trees.}
-GlobalVariable[]    Property treeUnlockedVars Auto
+GlobalVariable[]    Property TreeUnlockedVars Auto
 {Whether or not each tree has been unlocked.}
-GlobalVariable[]    Property currentProgressVars Auto
+GlobalVariable[]    Property CurrentProgressVars Auto
 {The current progress in each tree.}
-GlobalVariable[]    Property requiredProgressVars Auto
+GlobalVariable[]    Property RequiredProgressVars Auto
 {The progress needed to earn a new perk in each tree.}
-GlobalVariable[]    Property campfireProgressVars Auto
+GlobalVariable[]    Property CampfireProgressVars Auto
 {The progress-based percentages shown in the Campfire menu (currentProgressVar divided by requiredProgressVar and rounded to two digits).}
-GlobalVariable[]    Property perksAvailableVars Auto
+GlobalVariable[]    Property PerksAvailableVars Auto
 {The numbers of perks available in each tree.}
-GlobalVariable[]    Property perksEarnedVars Auto
+GlobalVariable[]    Property PerksEarnedVars Auto
 {The numbers of perks the player has earned in each tree.}
-GlobalVariable[]    Property perksTotalVars Auto
+GlobalVariable[]    Property PerksTotalVars Auto
 {The total numbers of perks in each tree.}
 
 Function AdvanceWildfireSkill(int skill, int amount)
@@ -37,16 +37,16 @@ Arguments:
 - amount: The amount of points to advance archaeology by.}
     ; TODO Make 5 and 10 configurable
     AdvanceSkillManual(amount, \
-                       perksTotalVars[skill].GetValue() as int, \
+                       PerksTotalVars[skill].GetValue() as int, \
                        5, \
                        10, \
-                       currentProgressVars[skill], \
-                       requiredProgressVars[skill], \
-                       campfireProgressVars[skill], \
-                       perksAvailableVars[skill], \
-                       perksEarnedVars[skill], \
-                       skillAdvancedMessages[skill], \
-                       perkEarnedMessages[skill])
+                       CurrentProgressVars[skill], \
+                       RequiredProgressVars[skill], \
+                       CampfireProgressVars[skill], \
+                       PerksAvailableVars[skill], \
+                       PerksEarnedVars[skill], \
+                       SkillAdvancedMessages[skill], \
+                       PerkEarnedMessages[skill])
 EndFunction
 
 Function AdvanceSkillManual(int amount, int numPerks, int linearScale, int constantScale, GlobalVariable progressVar, GlobalVariable requiredProgressVar, GlobalVariable campfireProgressVar, GlobalVariable availablePerksVar, GlobalVariable earnedPerksVar, Message skillAdvancedMsg, Message perkEarnedMsg)
@@ -72,7 +72,7 @@ Arguments:
     If(earnedPerksVar.GetValue() < numPerks)
         int i = 0
         While(i < amount)
-            IncrementGlobalVariable(progressVar)
+            progressVar.SetValue(progressVar.GetValue() + 1)
             campfireProgressVar.SetValue(progressVar.GetValue() / requiredProgressVar.GetValue())
 
             ; if that put us over the 'required progress' mark, grant a perk
@@ -102,8 +102,8 @@ Arguments:
  - availablePerksVar:    The global variable that determines the nubmer of perks in this tree that the player can currently purchase.
  - earnedPerksVar:       The global variable that determines the total number of perks in this tree that the player has purchased thus far.
  - perkEarnedMsg:        The message that will be shown to the player when they unlock the perk.}
-    IncrementGlobalVariable(availablePerksVar)
-    IncrementGlobalVariable(earnedPerksVar)
+    availablePerksVar.SetValue(availablePerksVar.GetValue() + 1)
+    earnedPerksVar.SetValue(earnedPerksVar.GetValue() + 1)
     requiredProgressVar.SetValue(requiredProgressVar.GetValue() * linearScale + constantScale)
     progressVar.SetValue(0)
     campfireProgressVar.SetValue(0)
@@ -116,7 +116,7 @@ bool Function IsTreeUnlocked(int skill)
      - skill: The unique ID of the skill tree in question.
     Returns:
      true if the specified skill tree has already been unlocked.}
-    return treeUnlockedVars[skill].GetValue() == 1
+    return TreeUnlockedVars[skill].GetValue() == 1
 EndFunction
 
 Function UnlockTree(int skill, bool grantPerk)
@@ -124,22 +124,22 @@ Function UnlockTree(int skill, bool grantPerk)
     Arguments:
      - skill: The unique ID of the skill tree in question.
      - grantPerk: Whether or not to grant the player a perk as well.}
-    If(CampUtil.RegisterPerkTree(nodeControllers[skill], "Wildfire.esp"))
-        treeUnlockedVars[skill].SetValue(1)
-        treeUnlockedMessages[skill].Show()
+    If(CampUtil.RegisterPerkTree(NodeControllers[skill], "Wildfire.esp"))
+        TreeUnlockedVars[skill].SetValue(1)
+        TreeUnlockedMessages[skill].Show()
         If(grantPerk)
             ; TODO Make 5 and 10 configurable
             GrantPerk(5, \
                       10, \
-                      currentProgressVars[skill], \
-                      requiredProgressVars[skill], \
-                      campfireProgressVars[skill], \
-                      perksAvailableVars[skill], \
-                      perksEarnedVars[skill], \
-                      perkEarnedMessages[skill])
+                      CurrentProgressVars[skill], \
+                      RequiredProgressVars[skill], \
+                      CampfireProgressVars[skill], \
+                      PerksAvailableVars[skill], \
+                      PerksEarnedVars[skill], \
+                      PerkEarnedMessages[skill])
         EndIf
     Else
         ; something went very wrong
-        messageFailedRegistration.Show()
+        MessageFailedRegistration.Show()
     EndIf
 EndFunction

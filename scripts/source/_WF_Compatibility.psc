@@ -1,55 +1,90 @@
 ScriptName _WF_Compatibility Extends ReferenceAlias
-{Performs compatibility checks when the mod is first installed.}
+{The main compatibility script used to handle compatibility with other mods.}
 
-; GENERAL
-Actor   Property playerRef Auto
+; General
+Actor   Property PlayerRef Auto
 {The player reference.}
-bool    Property isDone Auto Hidden
-{Whether or not the compatibility checks have run.}
-Message Property messageStartingChecks Auto
-{The message shown to the player when the compatibility checks have started running.}
-Message Property messageFinishedChecks Auto
-{The message shown to the player when the compatibility checks have finished running.}
 
-; CAMPFIRE
-Message Property messageCampfireMissing Auto
+; Internals
+bool    Property IsDone = false Auto Hidden
+{Whether or not the compatibility checks have run.}
+
+; Messages
+Message Property MessageChecksStarted Auto
+{The message shown to the player when the compatibility checks have started running.}
+Message Property MessageChecksFinished Auto
+{The message shown to the player when the compatibility checks have finished running.}
+Message Property MessageMissingWildfire Auto
+{The warning shown to the player when Wildfire.esp could not be found.}
+Message Property MessageMissingCampfire Auto
 {The message shown to the player when their Campfire esm has somehow gone missing.}
-Message Property messageCampfireOutdated Auto
+Message Property MessageOutdatedCampfire Auto
 {The message shown to the player when their Campfire version is insufficient to run Wildfire.}
+
+; Mod Information
+bool    Property SKSELoaded = false Auto Hidden
 
 Event OnInit()
     RegisterForSingleUpdate(5.0)
 EndEvent
 
 Event OnUpdate()
-    ; Make sure we're in-game
-    If(playerRef.Is3DLoaded())
-        RunChecks()
+    ; Ensure that we are ingame before running the compatibility checks
+    If(PlayerRef.Is3DLoaded())
+        RunAllChecks(true)
     Else
         RegisterForSingleUpdate(5.0)
     EndIf
 EndEvent
 
-Function RunChecks()
-    {Runs all compatibility checks.}
-    Debug.Trace("[Wildfire] Running compatibility checks - errors are expected and normal")
-    messageStartingChecks.Show()
+Event OnPlayerLoadGame()
+    Debug.Trace("[Wildfire] Game load detected - running checks.")
+    RunAllChecks(false)
+    Debug.Trace("[Wildfire] Game load checks completed")
+EndEvent
 
-    ; Check that the Campfire version is sufficient
-    CheckCampfire()
+Function RunAllChecks(bool showMessages)
+    {Runs all compatibility checks and logs appropriately.}
+    IsDone = false
+    Debug.Trace("[Wildfire] Starting compatibility checks - errors are normal and expected.")
+    If(showMessages)
+        MessageChecksStarted.Show()
+    EndIf
 
-    Debug.Trace("[Wildfire] Finished running compatibility checks")
-    messageFinishedChecks.Show()
+    ; Make sure that Wildfire's esp and version are available
+    CheckWildfire()
+
+    ; Check if SKSE is available
+    CheckSKSE()
+
+    ; Check for other mods and enable automatic compatibility
+    ; TODO Add these here
+
+    If(showMessages)
+        MessageChecksFinished.Show()
+    EndIf
+    Debug.Trace("[Wildfire] Compatibility checks done.")
+    IsDone = true
 EndFunction
 
-Function CheckCampfire()
-    {Ensures that the installed Campfire version is sufficient to run Wildfire.}
-    GlobalVariable CampfireAPIVersion = Game.GetFormFromFile(0x03F1BE, "Campfire.esm") as GlobalVariable
-    If(!CampfireAPIVersion)
-        ; What the hell
-        messageCampfireMissing.Show()
-    ElseIf(CampfireAPIVersion.GetValueInt() < 4)
-        ; Tell the user to update Campfire
-        messageCampfireOutdated.Show()
+; ----- WILDFIRE ----- ;
+Function CheckWildfire()
+    {Makes sure that Wildfire's esp is available (i.e. has not been merged into a different esp) and that its version number can be found.}
+    If(!Game.GetFormFromFile(0x084BD4, "Wildfire.esp") as GlobalVariable)
+        ; If the warning property was filled (a newer version might have changed its name), use that
+        If(MessageMissingWildfire)
+            MessageMissingWildfire.Show()
+        Else
+            ; Otherwise, we'll have to use this method
+            Debug.MessageBox("Wildfire.esp could not be found. This is a SEVERE error - Wildfire will not able to continue running.\n\nLikely reasons are:\n - An incomplete, corrupt or outdated installation of Wildfire.\n - Wildfire has been merged into a different esp file.\n\nPlease make sure that you have the latest version of Wildfire installed and that it is NOT merged into a different esp before reporting this issue.")
+        EndIf
     EndIf
 EndFunction
+
+; ----- SKSE ----- ;
+Function CheckSKSE()
+    {Checks whether or not SKSE is loaded.}
+    SKSELoaded = SKSE.GetVersionRelease() > 0
+EndFunction
+
+; ---- NEXT MOD NAME HERE ---- ;

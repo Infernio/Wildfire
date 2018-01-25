@@ -5,33 +5,33 @@ import _WF_Constants
 import _WF_Utils
 
 ; GENERAL
-Actor               Property playerRef Auto
+Actor               Property PlayerRef Auto
 {The player reference.}
-_WF_PerkTreeManager Property perkManager Auto
+_WF_PerkTreeManager Property PerkManager Auto
 {The global perk tree manager.}
-Keyword             Property isRelic Auto
+Keyword             Property IsRelic Auto
 {The keyword that indicates whether or not an item is a relic.}
-Keyword             Property isResearch Auto
+Keyword             Property IsResearch Auto
 {The keyword that indicates whether or not an item is a research document.}
 
 ; RESEARCH
-Keyword             Property researchBonusArcana Auto
+Keyword             Property ResearchBonusArcana Auto
 {The keyword that indicates that a research item is more likely to give arcana research.}
-Keyword             Property researchBonusReflexes Auto
+Keyword             Property ResearchBonusReflexes Auto
 {The keyword that indicates that a research item is more likely to give reflexes research.}
-Keyword             Property researchBonusStrength Auto
+Keyword             Property ResearchBonusStrength Auto
 {The keyword that indicates that a research item is more likely to give strength research.}
-Keyword             Property researchValueMinor Auto
+Keyword             Property ResearchValueMinor Auto
 {The keyword that indicates that a research item came from a minor relic.}
-Keyword             Property researchValueNormal Auto
+Keyword             Property ResearchValueNormal Auto
 {The keyword that indicates that a research item came from a normal relic.}
-Keyword             Property researchValueAncient Auto
+Keyword             Property ResearchValueAncient Auto
 {The keyword that indicates that a research item came from an ancient relic.}
 
 Event OnItemAdded(Form baseItem, int itemCount, ObjectReference itemRef, ObjectReference sourceContainer)
     If(baseItem.HasKeyword(IsRelic))
         ProcessRelic(itemCount)
-    ElseIf(baseItem.HasKeyword(isResearch))
+    ElseIf(baseItem.HasKeyword(IsResearch))
         ProcessResearch(baseItem)
     EndIf
 EndEvent
@@ -40,9 +40,9 @@ Function ProcessRelic(int itemCount)
 {Handles relics being added to the player's inventory.
 Arguments:
  - itemCount: The number of relics that have been added to the player's inventory.}
-    If(!perkManager.IsTreeUnlocked(Archaeology()))
+    If(!PerkManager.IsTreeUnlocked(Archaeology()))
         ; We discovered archaeology, grant a perk as well
-        perkManager.UnlockTree(Archaeology(), true)
+        PerkManager.UnlockTree(Archaeology(), true)
     EndIf
 EndFunction
 
@@ -51,9 +51,9 @@ Function ProcessResearch(Form item)
 Arguments:
  - item: The research item that was added to the player's inventory.}
     ; begin by calculating the player's skill points in different areas
-    float magicSkills = GetTotalMagicSkills(playerRef)
-    float stealthSkills = GetTotalStealthSkills(playerRef)
-    float combatSkills = GetTotalCombatSkills(playerRef)
+    float magicSkills = GetTotalMagicSkills(PlayerRef)
+    float stealthSkills = GetTotalStealthSkills(PlayerRef)
+    float combatSkills = GetTotalCombatSkills(PlayerRef)
     float totalSkills = magicSkills + stealthSkills + combatSkills
 
     ; then, use that information to increase the chances of giving them a fitting bonus
@@ -63,11 +63,11 @@ Arguments:
     float strengthChance = 0.8 * (combatSkills / totalSkills)
 
     ; if the item has a fitting keyword, use that
-    If(item.HasKeyword(researchBonusArcana))
+    If(item.HasKeyword(ResearchBonusArcana))
         arcanaChance += 0.2
-    ElseIf(item.HasKeyword(researchBonusReflexes))
+    ElseIf(item.HasKeyword(ResearchBonusReflexes))
         reflexesChance += 0.2
-    ElseIf(item.HasKeyword(researchBonusStrength))
+    ElseIf(item.HasKeyword(ResearchBonusStrength))
         strengthChance += 0.2
     Else
         ; otherwise, apply randomly
@@ -83,20 +83,20 @@ Arguments:
 
     ; advance archaeology first
     int researchPoints = GetResearchAmount(item)
-    perkManager.AdvanceWildfireSkill(Archaeology(), researchPoints)
+    PerkManager.AdvanceWildfireSkill(Archaeology(), researchPoints)
 
     ; then use our calculated chances to give the player research
     float random = Utility.RandomFloat(0, 1)
     If(random <= arcanaChance)
-        perkManager.AdvanceWildfireSkill(Arcana(), researchPoints)
+        PerkManager.AdvanceWildfireSkill(Arcana(), researchPoints)
     ElseIf(random <= arcanaChance + reflexesChance)
-        perkManager.AdvanceWildfireSkill(Reflexes(), researchPoints)
+        PerkManager.AdvanceWildfireSkill(Reflexes(), researchPoints)
     Else
-        perkManager.AdvanceWildfireSkill(Strength(), researchPoints)
+        PerkManager.AdvanceWildfireSkill(Strength(), researchPoints)
     EndIf
 
     ; and then, get rid of the item
-    playerRef.RemoveItem(item, abSilent = true)
+    PlayerRef.RemoveItem(item, abSilent = true)
 EndFunction
 
 int Function GetResearchAmount(Form item)
@@ -106,11 +106,11 @@ int Function GetResearchAmount(Form item)
     Returns:
      A fitting amount of research progress based on the specified item.}
     ; TODO Balance and make it configurable / based on difficulty
-    If(item.HasKeyword(researchValueMinor))
+    If(item.HasKeyword(ResearchValueMinor))
         return 1
-    ElseIf(item.HasKeyword(researchValueNormal))
+    ElseIf(item.HasKeyword(ResearchValueNormal))
         return 10
-    ElseIf(item.HasKeyword(researchValueAncient))
+    ElseIf(item.HasKeyword(ResearchValueAncient))
         return 100
     EndIf
 EndFunction

@@ -1,8 +1,0 @@
-compiler: D:\Steam\steamapps\common\Skyrim\Papyrus Compiler\PapyrusCompiler.exe
-flags: TESV_Papyrus_Flags.flg
-output: D:\Users\Infernio\Desktop\Programming\Skyrim\Wildfire\scripts
-imports:
-    - D:\Users\Infernio\Desktop\Programming\Skyrim\Wildfire\scripts\source
-    - D:\Steam\steamapps\common\Skyrim\Data\Scripts\Source
-    - D:\Steam\steamapps\common\Skyrim\Data\Scripts
-optimize: true

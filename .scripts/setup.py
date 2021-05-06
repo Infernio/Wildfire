@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+# Sets up the build environment for building Wildfire
+# releases by downloading all required tools.
+
 import json
 import math
 import os
@@ -35,9 +38,9 @@ def download_github_release(owner: str, repo: str):
 def make_output(dir: str):
     """Creates a fresh version of the specified output directory. This
     recursively removes an existing directory at this path."""
-    if '.tools' not in dir:
+    if '.scripts' not in dir:
         raise RuntimeError('This script is not allowed to touch files outside '
-                           '".tools", but attempted to delete %s' % dir)
+                           '".scripts", but attempted to delete %s' % dir)
     with suppress(FileNotFoundError):
         shutil.rmtree(dir)
     os.mkdir(dir)
@@ -65,11 +68,12 @@ def unpack_archive(src: str, dst: str):
     os.remove(src)
 
 def main():
-    if not os.getcwd().endswith('.tools'):
-        os.chdir('.tools')
-        if not os.getcwd().endswith('.tools'):
-            raise RuntimeError('This script must be run in the .tools folder '
-                               'or in the directory above it.')
+    if not os.getcwd().endswith('.scripts'):
+        try:
+            os.chdir('.scripts')
+        except OSError as e:
+            raise RuntimeError('This script must be run in the .scripts '
+                               'folder or in the directory above it.') from e
     print('Downloading 7zip...')
     src_7z = download_file('https://www.7-zip.org/a/7za920.zip', '7z.zip')
     dst_7z = mkdir_ok('7zip')

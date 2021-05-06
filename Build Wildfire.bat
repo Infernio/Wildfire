@@ -1,6 +1,3 @@
 @echo off
-
-rem Build a release with Pyro
-pyro Wildfire.ppj
-
+py -3 .scripts/build.py
 pause

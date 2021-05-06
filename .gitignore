@@ -4,6 +4,6 @@
 # BSAs
 *.bsa
 
-# Automatically downloaded tools
-.tools/*
-!.tools/download_tools.py
+# Ignore automatically downloaded tools
+.scripts/*
+!.scripts/*.py

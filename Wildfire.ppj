@@ -1,0 +1,37 @@
+<PapyrusProject
+  xmlns="PapyrusProject.xsd"
+  Game="SSE"
+  Flags="TESV_Papyrus_Flags.flg"
+  Output="@MyProject\scripts"
+  Optimize="true"
+  Anonymize="true"
+  Package="true">
+  <Variables>
+    <Variable Name="Namespace" Value="Wildfire"/>
+    <Variable Name="ModName" Value="@Namespace"/>
+    <Variable Name="MyProject" Value="G:\steam\steamapps\common\Skyrim Special Edition Mods\Bash Installers\@ModName"/>
+    <Variable Name="GameDir" Value="G:\steam\steamapps\common\Skyrim Special Edition\Data"/>
+  </Variables>
+  <Imports>
+    <Import>@MyProject\scripts\source</Import>
+    <Import>@GameDir\scripts\source</Import>
+  </Imports>
+  <Scripts>
+    <Script>_WF_Compatibility.psc</Script>
+    <Script>_WF_Constants.psc</Script>
+    <Script>_WF_InspectRelic.psc</Script>
+    <Script>_WF_MCMScript.psc</Script>
+    <Script>_WF_PerkTreeManager.psc</Script>
+    <Script>_WF_PlayerTrackingScript.psc</Script>
+    <Script>_WF_Utils.psc</Script>
+  </Scripts>
+  <Packages Output="@MyProject">
+    <Package Name="@ModName" RootDir="@MyProject">
+      <Include>**/scripts/*.pex</Include>
+      <Include>**/interface/**/*.*</Include>
+    </Package>
+    <Package Name="@ModName - Textures" RootDir="@MyProject">
+      <Include>**/textures/*.*</Include>
+    </Package>
+  </Packages>
+</PapyrusProject>

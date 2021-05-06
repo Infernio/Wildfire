@@ -34,6 +34,9 @@
  - **More to come...**
 
 ### License
+Wildfire is licensed under the [GPLv3 License](LICENSE.md).
+
+### Boilerplate Notice
 Copyright (C) 2017-2021 Infernio
 
 This program is free software: you can redistribute it and/or modify

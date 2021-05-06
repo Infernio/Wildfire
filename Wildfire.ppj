@@ -5,11 +5,12 @@
   Output="@MyProject\scripts"
   Optimize="true"
   Anonymize="true"
-  Package="true">
+  Package="true"
+  Zip="true">
   <Variables>
-    <Variable Name="Namespace" Value="Wildfire"/>
-    <Variable Name="ModName" Value="@Namespace"/>
-    <Variable Name="MyProject" Value="G:\steam\steamapps\common\Skyrim Special Edition Mods\Bash Installers\@ModName"/>
+    <Variable Name="ModName" Value="Wildfire"/>
+    <Variable Name="BashInstallers" Value="G:\steam\steamapps\common\Skyrim Special Edition Mods\Bash Installers"/>
+    <Variable Name="MyProject" Value="@BashInstallers\@ModName"/>
     <Variable Name="GameDir" Value="G:\steam\steamapps\common\Skyrim Special Edition\Data"/>
   </Variables>
   <Imports>
@@ -27,11 +28,17 @@
   </Scripts>
   <Packages Output="@MyProject">
     <Package Name="@ModName" RootDir="@MyProject">
-      <Include>**/scripts/*.pex</Include>
+      <Include>**/scripts/*.*</Include>
       <Include>**/interface/**/*.*</Include>
     </Package>
     <Package Name="@ModName - Textures" RootDir="@MyProject">
       <Include>**/textures/*.*</Include>
     </Package>
   </Packages>
+  <ZipFiles Output="@BashInstallers">
+    <ZipFile Name="@ModName" RootDir="@MyProject" Compression="deflate">
+      <Include NoRecurse="true">*.esp</Include>
+      <Include NoRecurse="true">*.bsa</Include>
+    </ZipFile>
+  </ZipFiles>
 </PapyrusProject>

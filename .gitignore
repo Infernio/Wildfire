@@ -3,3 +3,7 @@
 
 # BSAs
 *.bsa
+
+# Automatically downloaded tools
+.tools/*
+!.tools/download_tools.py

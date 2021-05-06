@@ -4,9 +4,7 @@
   Flags="TESV_Papyrus_Flags.flg"
   Output="@MyProject\scripts"
   Optimize="true"
-  Anonymize="true"
-  Package="true"
-  Zip="true">
+  Anonymize="true">
   <Variables>
     <Variable Name="ModName" Value="Wildfire"/>
     <Variable Name="BashInstallers" Value="G:\steam\steamapps\common\Skyrim Special Edition Mods\Bash Installers"/>
@@ -26,19 +24,4 @@
     <Script>_WF_PlayerTrackingScript.psc</Script>
     <Script>_WF_Utils.psc</Script>
   </Scripts>
-  <Packages Output="@MyProject">
-    <Package Name="@ModName" RootDir="@MyProject">
-      <Include>**/scripts/*.*</Include>
-      <Include>**/interface/**/*.*</Include>
-    </Package>
-    <Package Name="@ModName - Textures" RootDir="@MyProject">
-      <Include>**/textures/*.*</Include>
-    </Package>
-  </Packages>
-  <ZipFiles Output="@BashInstallers">
-    <ZipFile Name="@ModName" RootDir="@MyProject" Compression="deflate">
-      <Include NoRecurse="true">*.esp</Include>
-      <Include NoRecurse="true">*.bsa</Include>
-    </ZipFile>
-  </ZipFiles>
 </PapyrusProject>
